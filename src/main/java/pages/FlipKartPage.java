@@ -2,6 +2,8 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -18,6 +20,7 @@ public class FlipKartPage {
     private By BannerUsernameField = By.cssSelector("div._2QfC02 input[type='text']");
     private By BannerPasswordFiled = By.cssSelector("div._2QfC02 input[type='password']");
     private By UsernameLocator = By.xpath("//div[@class='exehdJ' and .='Gurram Ramesh']");
+    private By ElectronicsLocator = By.xpath("//p[.='Electronics']/preceding-sibling::img");
 
 
     public FlipKartPage(WebDriver driver) {
@@ -80,5 +83,12 @@ public class FlipKartPage {
     public boolean isMyUserNamePresent() {
         return new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.visibilityOfElementLocated(UsernameLocator)).isDisplayed();
+    }
+
+    public void hoverOverElectronics() throws InterruptedException {
+        Actions actions = new Actions(driver);
+        WebElement electronicsElement = driver.findElement(ElectronicsLocator);
+        actions.moveToElement(electronicsElement).perform();
+        Thread.sleep(10000);
     }
 }

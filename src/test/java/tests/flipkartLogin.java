@@ -53,4 +53,13 @@ public class flipkartLogin extends BaseTest {
         flipkartpage.clickBannerLoginButton();
         flipkartpage.isMyUserNamePresent();
     }
+
+    @Test
+    public void loginMouseHover() throws Exception {
+        flipkartpage = new FlipKartPage(driver);
+        String url = PropertyConfig.getPropValue("url");
+        flipkartpage.goTo(url);
+        flipkartpage.clickBannerCloseButton();
+        flipkartpage.hoverOverElectronics();
+    }
 }
