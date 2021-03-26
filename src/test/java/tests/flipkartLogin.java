@@ -1,29 +1,56 @@
 package tests;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import config.PropertyConfig;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.FlipKartPage;
 
 public class flipkartLogin extends BaseTest {
-    String url = "https://www.flipkart.com/";
-    By closebbutton = By.xpath("//button[@class='_2KpZ6l _2doB4z']");
-    By logo = By.cssSelector("[title='Flipkart']");
+    FlipKartPage flipkartpage;
 
     @Test
-    public void testFlipKartLaunch() throws InterruptedException {
-        driver.get(url);
-        Assert.assertEquals(driver.getCurrentUrl(), url, "url is not as expected after launching!!");
+    public void testFlipKartLaunch() throws Exception {
+        flipkartpage = new FlipKartPage(driver);
+        String url = PropertyConfig.getPropValue("url");
+        flipkartpage.goTo(url);
+        Assert.assertEquals(flipkartpage.getUrl(), url, "url is not as expected after launching!!");
     }
 
     @Test
-    public void testVisibilityOfFlipkartLabel() {
-        driver.get(url);
-        new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.elementToBeClickable(closebbutton)).click();
-        boolean isdisplayed = new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.visibilityOfElementLocated(logo)).isDisplayed();
-        Assert.assertTrue(isdisplayed, "logo is not displayed!!");
+    public void testVisibilityOfFlipkartLabel() throws Exception {
+        flipkartpage = new FlipKartPage(driver);
+        String url = PropertyConfig.getPropValue("url");
+        flipkartpage.goTo(url);
+        flipkartpage.clickBannerCloseButton();
+        Assert.assertTrue(flipkartpage.isLogoDisplayed(), "logo is not displayed!!");
+    }
+
+    @Test
+    public void testIncorrectUrl() throws Exception {
+        flipkartpage = new FlipKartPage(driver);
+        String url = PropertyConfig.getPropValue("incorrectUrl");
+        Assert.assertTrue(flipkartpage.siteCannotBeReachedShouldBeDisplayed(), "wrong url worked!!");
+    }
+
+    @Test
+    public void testVisibilityOfFlipKartElements() throws Exception {
+        flipkartpage = new FlipKartPage(driver);
+        String url = PropertyConfig.getPropValue("url");
+        flipkartpage.goTo(url);
+        flipkartpage.clickBannerCloseButton();
+        Assert.assertTrue(flipkartpage.isExploreLinkVisible(), "explore link is not visible!!");
+        Assert.assertTrue(flipkartpage.isPlusLabelPresent(), "plus label is not visible!!");
+        Assert.assertTrue(flipkartpage.isSearchSubmitPresent(), "search submit is not visible!!");
+    }
+
+    @Test
+    public void loginLogoutFlipkart() throws Exception {
+        flipkartpage = new FlipKartPage(driver);
+        String url = PropertyConfig.getPropValue("url");
+        flipkartpage.goTo(url);
+        flipkartpage.enterUsername(PropertyConfig.getPropValue("username"));
+        flipkartpage.enterPassword(PropertyConfig.getPropValue("password"));
+        flipkartpage.clickBannerLoginButton();
+        flipkartpage.isMyUserNamePresent();
     }
 }

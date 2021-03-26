@@ -1,5 +1,6 @@
 package tests;
 
+import config.PropertyConfig;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,12 +13,11 @@ public class BaseTest {
     WebDriver driver;
 
     @BeforeMethod
-    public void setUp() {
+    public void setUp() throws Exception {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-
+        driver.manage().timeouts().implicitlyWait(Long.parseLong(PropertyConfig.getPropValue("implicitTime")), TimeUnit.SECONDS);
     }
 
     @AfterMethod
